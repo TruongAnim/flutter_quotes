@@ -5,9 +5,9 @@ import 'package:flutter_quotes/values/app_colors.dart';
 import 'package:flutter_quotes/values/app_styles.dart';
 
 class AppButton extends StatelessWidget {
-  String text;
-  dynamic onTap;
-  AppButton({super.key, required this.text, required this.onTap});
+  final String text;
+  final dynamic onTap;
+  const AppButton({super.key, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +33,35 @@ class AppButton extends StatelessWidget {
   }
 }
 
+class ShowMoreWidget extends StatelessWidget {
+  final List<EnglishToday> listWord;
+  const ShowMoreWidget({super.key, required this.listWord});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ShowMoreButton(
+            text: "Show more gird",
+            pageWidget: AllWordsPage(listWord: listWord)),
+        ShowMoreButton(
+            text: "Show more list",
+            pageWidget: ListWordsPage(listWord: listWord))
+      ],
+    );
+  }
+}
+
 class ShowMoreButton extends StatelessWidget {
-  List<EnglishToday> listWord;
-  ShowMoreButton({super.key, required this.listWord});
+  final Widget pageWidget;
+  final String text;
+  const ShowMoreButton(
+      {super.key, required this.text, required this.pageWidget});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 30, top: 10),
-      alignment: Alignment.centerLeft,
+      margin: const EdgeInsets.all(10),
       child: Material(
         color: AppColors.primaryColor,
         borderRadius: BorderRadius.circular(20),
@@ -50,16 +70,16 @@ class ShowMoreButton extends StatelessWidget {
           onTap: () {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
-                return AllWordsPage(listWord: listWord);
+                return pageWidget;
               },
             ));
           },
           splashColor: Colors.black38,
           borderRadius: BorderRadius.circular(20),
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Text(
-              "Show more",
+              text,
               style: AppStyles.h5.copyWith(fontWeight: FontWeight.bold),
             ),
           ),

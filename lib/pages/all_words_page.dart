@@ -60,3 +60,69 @@ class _AllWordsPageState extends State<AllWordsPage> {
     );
   }
 }
+
+class ListWordsPage extends StatelessWidget {
+  final List<EnglishToday> listWord;
+  const ListWordsPage({super.key, required this.listWord});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "English Today",
+          style: AppStyles.h3.copyWith(color: AppColors.textColor),
+        ),
+        backgroundColor: AppColors.secondColor,
+        elevation: 0,
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Image.asset(AppAssets.leftArrow)),
+      ),
+      body: Container(
+          color: AppColors.secondColor,
+          child: ListView.builder(
+            itemCount: listWord.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: index % 2 == 0
+                        ? AppColors.lighBlue
+                        : AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black45,
+                          offset: Offset(2, 4),
+                          blurRadius: 4)
+                    ]),
+                child: ListTile(
+                  title: Text(
+                    listWord[index].noun ?? "",
+                    style: AppStyles.h4
+                        .copyWith(color: AppColors.textColor, fontSize: 20),
+                  ),
+                  leading: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: Image.asset(
+                      AppAssets.heart,
+                      color: listWord[index].isFavourite
+                          ? Colors.red
+                          : AppColors.lightGrey,
+                    ),
+                  ),
+                  subtitle: Text(
+                    "It\'s amazing how complete is the delusion that beauty is goodness",
+                    style: AppStyles.h5.copyWith(color: AppColors.greyText),
+                  ),
+                ),
+              );
+            },
+          )),
+    );
+  }
+}

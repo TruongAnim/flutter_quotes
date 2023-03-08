@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           currentIndex >= 5
-              ? ShowMoreButton(
+              ? ShowMoreWidget(
                   listWord: listWord,
                 )
               : Container(
