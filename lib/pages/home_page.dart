@@ -10,6 +10,7 @@ import 'package:flutter_quotes/values/app_fonts.dart';
 import 'package:flutter_quotes/values/app_styles.dart';
 import 'package:flutter_quotes/values/share_keys.dart';
 import 'package:flutter_quotes/widgets/app_buttons.dart';
+import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -124,7 +125,7 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: Drawer(
         child: Container(
-          padding: EdgeInsets.only(top: 40, left: 20),
+          padding: const EdgeInsets.only(top: 40, left: 20),
           color: AppColors.lighBlue,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -133,16 +134,16 @@ class _HomePageState extends State<HomePage> {
               style: AppStyles.h3.copyWith(color: AppColors.textColor),
             ),
             Container(
-                margin: EdgeInsets.only(top: 20, right: 20),
+                margin: const EdgeInsets.only(top: 20, right: 20),
                 child: AppButton(text: 'Favorites', onTap: () {})),
             Container(
-                margin: EdgeInsets.only(top: 40, right: 20),
+                margin: const EdgeInsets.only(top: 40, right: 20),
                 child: AppButton(
                     text: 'Your control',
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return ControlPage();
+                          return const ControlPage();
                         },
                       ));
                     }))
@@ -173,7 +174,7 @@ class _pageWidgetState extends State<pageWidget> {
         child: InkWell(
           onDoubleTap: () {
             setState(() {
-              widget.word.isFavourite = !widget.word.isFavourite;
+              // widget.word.isFavourite = !widget.word.isFavourite;
             });
           },
           borderRadius: BorderRadius.circular(24),
@@ -182,12 +183,40 @@ class _pageWidgetState extends State<pageWidget> {
             padding: const EdgeInsets.all(20),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(
-                alignment: Alignment.centerRight,
-                child: Image.asset(
-                  AppAssets.heart,
-                  color: widget.word.isFavourite ? Colors.red : Colors.white,
+              // Container(
+              //   alignment: Alignment.centerRight,
+              //   child: Image.asset(
+              //     AppAssets.heart,
+              //     color: widget.word.isFavourite ? Colors.red : Colors.white,
+              //   ),
+              // ),
+              LikeButton(
+                isLiked: widget.word.isFavourite,
+                onTap: (isLiked) async {
+                  setState(() {
+                    widget.word.isFavourite = !widget.word.isFavourite;
+                  });
+                  return widget.word.isFavourite;
+                },
+                mainAxisAlignment: MainAxisAlignment.end,
+                size: 48,
+                circleColor: const CircleColor(
+                    start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                bubblesColor: const BubblesColor(
+                  dotPrimaryColor: Color(0xff33b5e5),
+                  dotSecondaryColor: Color(0xff0099cc),
                 ),
+                likeBuilder: (bool isLiked) {
+                  // return Icon(
+                  //   Icons.home,
+                  //   color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+                  //   size: 48,
+                  // );
+                  return ImageIcon(
+                    AssetImage(AppAssets.heart),
+                    color: widget.word.isFavourite ? Colors.red : Colors.white,
+                  );
+                },
               ),
               RichText(
                   overflow: TextOverflow.ellipsis,
@@ -244,6 +273,6 @@ Widget indicatorBuilder(bool isActive, double size) {
         boxShadow: const [
           BoxShadow(color: Colors.black38, offset: Offset(2, 3), blurRadius: 3)
         ]),
-    duration: Duration(milliseconds: 300),
+    duration: const Duration(milliseconds: 300),
   );
 }
